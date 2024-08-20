@@ -5,10 +5,10 @@
   "author": "Max Stoiber <contact@mxstbr.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^18.7.19",
-    "nodemon": "^2.0.20",
-    "prettier": "^2.7.1",
-    "tsm": "^2.2.2"
+    "@types/node": "^22.4.1",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
+    "tsm": "^2.3.0"
   },
   "scripts": {
     "build": "tsm rules.ts",
