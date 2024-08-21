@@ -1,17 +1,10 @@
-import { KarabinerRule, KeyCode, Manipulator, To } from './types';
-
-/**
- * Custom way to describe a command in a layer
- */
-export interface LayerCommand {
-  to: To[];
-  description?: string;
-}
-
-type HyperKeySublayer = {
-  // The ? is necessary, otherwise we'd have to define something for _every_ key code
-  [key_code in KeyCode]?: LayerCommand;
-};
+import {
+  HyperKeySublayer,
+  KarabinerRule,
+  KeyCode,
+  LayerCommand,
+  Manipulator,
+} from './types';
 
 /**
  * Create a Hyper Key sublayer, where every command is prefixed with a key
@@ -23,7 +16,7 @@ export function createHyperSubLayer(
   commands: HyperKeySublayer,
   allSubLayerVariables: string[],
 ): Manipulator[] {
-  const subLayerVariableName = generateSubLayerVariableName(sublayer_key);
+  const subLayerVariableName = sublayer_key.sublayer_key;
 
   return [
     // When Hyper + sublayer_key is pressed, set the variable to 1; on key_up, set it to 0 again
@@ -108,7 +101,7 @@ export function createHyperSubLayers(subLayers: {
 }): KarabinerRule[] {
   const allSubLayerVariables = (
     Object.keys(subLayers) as (keyof typeof subLayers)[]
-  ).map((sublayer_key) => generateSubLayerVariableName(sublayer_key));
+  ).map((sublayer_key) => sublayer_key.sublayer_key);
 
   return Object.entries(subLayers).map(([key, value]) =>
     'to' in value
@@ -150,53 +143,11 @@ export function createHyperSubLayers(subLayers: {
   );
 }
 
-function generateSubLayerVariableName(key: KeyCode) {
-  return `hyper_sublayer_${key}`;
-}
-
-/**
- * Utility function to create a LayerCommand from a tagged template literal
- * where each line is a shell command to be executed.
- */
-export function shell(
-  strings: TemplateStringsArray,
-  ...values: any[]
-): LayerCommand {
-  const commands = strings.reduce((acc, str, i) => {
-    const value = i < values.length ? values[i] : '';
-    const lines = (str + value)
-      .split('\n')
-      .filter((line) => line.trim() !== '');
-    acc.push(...lines);
-    return acc;
-  }, [] as string[]);
-
-  return {
-    to: commands.map((command) => ({
-      shell_command: command.trim(),
-    })),
-    description: commands.join(' && '),
-  };
-}
-
-/**
- * Shortcut for managing window sizing with Rectangle
- */
-export function rectangle(name: string): LayerCommand {
-  return {
-    to: [
-      {
-        shell_command: `open -g rectangle://execute-action?name=${name}`,
-      },
-    ],
-    description: `Window: ${name}`,
-  };
-}
-
 declare global {
   interface String {
     get app(): LayerCommand;
     get open(): LayerCommand;
+    get sublayer_key(): string;
   }
 }
 
@@ -217,6 +168,12 @@ Object.defineProperties(String.prototype, {
   app: {
     get: function () {
       return `-a '${this}.app'`.open;
+    },
+  },
+
+  sublayer_key: {
+    get: function () {
+      return `hyper_sublayer_${this}`;
     },
   },
 });

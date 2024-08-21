@@ -141,7 +141,6 @@ export type KeyCode =
   | 'left_shift'
   | 'left_option'
   | 'left_command'
-  | 'right_control'
   | 'right_shift'
   | 'right_option'
   | 'right_command'
@@ -416,3 +415,13 @@ export type KeyCode =
   //   not_from: true
   | 'volume_down'
   | 'volume_up';
+
+export interface LayerCommand {
+  to: To[];
+  description?: string;
+}
+
+export type HyperKeySublayer = {
+  // The ? is necessary, otherwise we'd have to define something for _every_ key code
+  [key_code in KeyCode]?: LayerCommand;
+};
