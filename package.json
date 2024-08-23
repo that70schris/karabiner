@@ -6,7 +6,7 @@
     "tsm": "^2.3.0"
   },
   "scripts": {
-    "build": "tsm rules.ts",
+    "build": "tsm index.ts",
     "watch": "nodemon --exec yarn build -e ts"
   }
 }
