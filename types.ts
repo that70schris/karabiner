@@ -416,9 +416,9 @@ export type KeyCode =
   | 'volume_down'
   | 'volume_up';
 
-export interface LayerCommand {
-  to: To[];
+export class LayerCommand {
   description?: string;
+  to: To[];
 }
 
 export type HyperKeySublayer = {
