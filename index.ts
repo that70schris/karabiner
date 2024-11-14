@@ -14,6 +14,9 @@ writeFileSync(
       profiles: [
         {
           name: 'Default',
+          virtual_hid_keyboard: {
+            keyboard_type_v2: 'ansi',
+          },
           complex_modifications: {
             rules: [
               {
