@@ -1,12 +1,8 @@
 {
   "devDependencies": {
-    "@types/node": "^22.4.1",
+    "@types/node": "^22.10.1",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
     "tsm": "^2.3.0"
-  },
-  "scripts": {
-    "build": "tsm index.ts",
-    "watch": "nodemon --exec yarn build -e ts"
   }
 }
