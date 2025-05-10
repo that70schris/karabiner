@@ -1,8 +1,6 @@
 import { writeFileSync } from 'fs';
 import './extensions';
-import rules from './rules';
 import { KarabinerRule } from './types';
-import { createHyperSubLayers } from './utils';
 
 writeFileSync(
   'karabiner.json',
@@ -33,18 +31,8 @@ writeFileSync(
                     },
                     to: [
                       {
-                        set_variable: {
-                          name: 'hyper',
-                          value: 1,
-                        },
-                      },
-                    ],
-                    to_after_key_up: [
-                      {
-                        set_variable: {
-                          name: 'hyper',
-                          value: 0,
-                        },
+                        key_code: 'l',
+                        modifiers: ['control', 'option', 'shift', 'command'],
                       },
                     ],
                     to_if_alone: [
@@ -55,7 +43,6 @@ writeFileSync(
                   },
                 ],
               },
-              ...createHyperSubLayers(rules),
             ] as KarabinerRule[],
           },
         },
